@@ -1,7 +1,5 @@
 import Article from "../models/Article.js";
 import aiService from '../utils/ai.js';
-
-const { generateSummaryWithFallback } = aiService;
 import errorHandler from '../middleware/errorHandler.js';
 
 const { asyncHandler, createError } = errorHandler;
@@ -104,7 +102,7 @@ const generateSummary = asyncHandler(async (req, res) => {
   }
 
   // Generate new summary using AI
-  const summary = await generateSummaryWithFallback(article.content);
+  const summary = await aiService.generateSummaryWithFallback(article.content);
 
   // Save summary to database
   const savedSummary = await Article.createSummary(id, summary);
@@ -209,7 +207,7 @@ const getArticleSummary = asyncHandler(async (req, res) => {
   }
 
   // Generate new summary
-  const summary = await generateSummaryWithFallback(article.content);
+  const summary = await aiService.generateSummaryWithFallback(article.content);
   const savedSummary = await Article.createSummary(id, summary);
 
   res.json({
